@@ -18,6 +18,9 @@ interval:
     then:
       - script.execute: send_sensor_data
     
+sensor:
+
+
 output:
   - platform: gpio
     pin: GPIO4
@@ -170,6 +173,14 @@ sensor:
     characteristic_uuid: '2a19'
     icon: 'mdi:battery'
     unit_of_measurement: '%'
+    
+  - platform: hx711
+    name: "HX711 Value"
+    dout_pin: D0
+    clk_pin: D1
+    gain: 128
+    update_interval: 60s
+
   # - platform: ble_client
   #   type: characteristic
   #   ble_client_id: itag_black
