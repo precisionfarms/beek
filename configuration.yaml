@@ -17,9 +17,6 @@ interval:
     id: bob
     then:
       - script.execute: send_sensor_data
-    
-sensor:
-
 
 output:
   - platform: gpio
@@ -141,6 +138,7 @@ esp32_ble_tracker:
   #           for (auto data : x.get_manufacturer_datas()) {
   #               ESP_LOGD("ble_adv", "    - %s: (length %i)", data.uuid.to_string().c_str(), data.data.size());
   #           }
+  
 ble_client:
   - mac_address: 53:CB:4A:6D:80:B7
     id: itag_black
@@ -173,28 +171,13 @@ sensor:
     characteristic_uuid: '2a19'
     icon: 'mdi:battery'
     unit_of_measurement: '%'
-    
+
   - platform: hx711
     name: "HX711 Value"
     dout_pin: D0
     clk_pin: D1
     gain: 128
     update_interval: 60s
-
-  # - platform: ble_client
-  #   type: characteristic
-  #   ble_client_id: itag_black
-  #   service_uuid: '0001'
-  #   characteristic_uuid: '0003'
-  #   descriptor_uuid: '2902'
-  #   name: "Temperature Sensor 32bit float"        
-  #   device_class: "temperature"
-  #   lambda: |-
-  #     return *((float*)(&x));
-  # - platform: ble_client
-  #   type: rssi
-  #   ble_client_id: itag_black
-  #   name: "iTag RSSI"      
 
 climate:
   - platform: thermostat
