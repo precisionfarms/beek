@@ -30,13 +30,13 @@ switch:
     id: heat_relay
     name: "Heater"
     icon: mdi:heating-coil
-    on_turn_on: 
-      then:
-        - deep_sleep.prevent: deepsleep  
-    on_turn_off: 
-      then:
-        - delay: 5s                      
-        - deep_sleep.allow: deepsleep
+    # on_turn_on: 
+    #   then:
+    #     - deep_sleep.prevent: deepsleep  
+    # on_turn_off: 
+    #   then:
+    #     - delay: 5s                      
+    #     - deep_sleep.allow: deepsleep
 
 i2c:
   sda: GPIO18
@@ -71,7 +71,7 @@ script:
             Content-Type: "application/json"
           capture_response: True
           json:
-            deviceName: "ESPHome"            
+            deviceName: "{id_prefix}"            
             deviceModelId: "3"                        
           on_response:
             then:
