@@ -174,8 +174,8 @@ sensor:
 
   - platform: hx711
     name: "HX711 Value"
-    dout_pin: D0
-    clk_pin: D1
+    dout_pin: 21
+    clk_pin: 22
     gain: 128
     update_interval: 60s
 
