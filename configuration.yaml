@@ -173,11 +173,19 @@ sensor:
     unit_of_measurement: '%'
 
   - platform: hx711
-    name: "HX711 Value"
-    dout_pin: 21
-    clk_pin: 22
+    id: hive_scale_raw
+    name: "Hive Scale Raw"
+    dout_pin: GPIO21
+    clk_pin: GPIO22
     gain: 128
-    update_interval: 60s
+    update_interval: 5s
+    accuracy_decimals: 0
+    filters:
+      # Smooth vibration, wind, and electrical noise while calibrating.
+      - median:
+          window_size: 7
+          send_every: 6
+          send_first_at: 1
 
 climate:
   - platform: thermostat
