@@ -22,6 +22,24 @@ output:
   - platform: gpio
     pin: GPIO4
     id: gpio_power
+  # Noctua 4-wire PWM input is pulled up inside the fan. A 2N7000/2N7002
+  # open-drain stage inverts the ESP32 signal, so the LEDC output is inverted
+  # here to keep the Home Assistant percentage intuitive (100% = full speed).
+  - platform: ledc
+    pin:
+      number: GPIO25
+      inverted: true
+    id: exhaust_fan_pwm
+    frequency: 25kHz
+    zero_means_zero: true
+
+fan:
+  - platform: speed
+    id: exhaust_fan
+    name: "Hive Exhaust Fan"
+    output: exhaust_fan_pwm
+    speed_count: 100
+    restore_mode: RESTORE_DEFAULT_OFF
 
 switch:
   - platform: gpio
@@ -186,6 +204,27 @@ sensor:
           window_size: 7
           send_every: 6
           send_first_at: 1
+
+  # The Noctua tach output is open collector and produces two pulses per
+  # revolution. Use an external 10k pull-up to 3.3V for reliable outdoor
+  # wiring; the internal pull-up remains enabled as a safe fallback.
+  - platform: pulse_counter
+    id: exhaust_fan_speed
+    name: "Hive Exhaust Fan Speed"
+    pin:
+      number: GPIO27
+      mode:
+        input: true
+        pullup: true
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
+    update_interval: 10s
+    unit_of_measurement: "rpm"
+    accuracy_decimals: 0
+    icon: mdi:fan
+    filters:
+      - multiply: 0.5
 
 climate:
   - platform: thermostat
